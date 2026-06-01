@@ -1,0 +1,20 @@
+{{- if and .Values.frontend.enabled .Values.frontend.route.enabled }}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Release.Name }}-frontend
+  annotations:
+    haproxy.router.openshift.io/timeout: {{ .Values.frontend.route.timeout | quote }}
+spec:
+  {{- if .Values.frontend.route.host }}
+  host: {{ .Values.frontend.route.host | quote }}
+  {{- end }}
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  to:
+    kind: Service
+    name: {{ .Release.Name }}-frontend
+  port:
+    targetPort: http
+{{- end }}

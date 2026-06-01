@@ -1,0 +1,18 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^packages/(api|db|ingestion)/
+      - id: ruff-format
+        files: ^packages/(api|db|ingestion)/
+
+  - repo: local
+    hooks:
+      - id: eslint-ui
+        name: eslint ui
+        entry: pnpm --filter @supply-chain-scenario-rag/ui lint
+        language: system
+        files: ^packages/ui/
+        pass_filenames: false

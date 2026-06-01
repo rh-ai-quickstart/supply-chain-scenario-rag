@@ -1,436 +1,609 @@
-# [INSERT quickstart title here]
+# supply-chain-scenario-rag
 
-> **CONTRIBUTOR TODO: update title**
->
-> Replace the H1 title above with your quickstart title
->
-> **TITLE requirements:**
-> - MAX CHAR: 64
-> - Industry use case, e.g.: "Protect patient data with LLM guardrails"
->
-> _TITLE will be extracted for publication._
+A ready-made template for creating new AI Quickstarts
 
-[Add your short description here - max 160 characters]
+## Architecture
 
-> **CONTRIBUTOR TODO: short description**
->
-> Add a SHORT DESCRIPTION of your use case between H1 title and the Table of Contents
->
-> **SHORT DESCRIPTION requirements:**
-> - MAX CHAR: 160
-> - Describe the INDUSTRY use case
->
-> _SHORT DESCRIPTION will be extracted for publication._
+This project is built with:
 
-## Table of Contents
+- **Turborepo** - High-performance build system for the monorepo
+- **React + Vite** - Modern frontend with TanStack Router
+- **FastAPI** - Python backend with async support
+- **PostgreSQL** - Database with Alembic migrations
 
-> **CONTRIBUTOR TODO: update table of contents links**
->
-> This section is recommended for better navigation. The links below are examples - update them to match your actual README sections.
+## Project Structure
 
-- [Overview](#overview)
-- [Detailed description](#detailed-description)
-  - [See it in action](#see-it-in-action)
-  - [Architecture diagrams](#architecture-diagrams)
-- [Requirements](#requirements)
-  - [Minimum hardware requirements](#minimum-hardware-requirements)
-  - [Minimum software requirements](#minimum-software-requirements)
-  - [Required user permissions](#required-user-permissions)
-- [Deploy](#deploy)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Validating the deployment](#validating-the-deployment)
-  - [Delete](#delete)
-- [Repository structure](#repository-structure)
-- [References](#references)
-- [Technical details](#technical-details)
-- [Tags](#tags)
+```
+supply-chain-scenario-rag/
+├── packages/
+│   ├── ui/           # React frontend application
+│   ├── api/          # FastAPI backend service
+│   └── db/           # Database and migrations
+├── compose.yml       # Podman Compose configuration (all services)
+├── Makefile          # Makefile with common commands
+├── turbo.json        # Turborepo configuration
+└── package.json      # Root package configuration
+```
 
-## Overview
-
-> **CONTRIBUTOR TODO: add overview**
->
-> Write 2-4 sentences that give a high-level summary of what this quickstart does.
->
-> **Focus on:**
-> - What problem does this solve?
-> - Who is this for? (e.g., "Healthcare providers managing patient data")
-> - What will users be able to do after deploying this?
->
-> Keep it non-technical - save technical details for later sections.
-
-## Detailed description
-
-> **CONTRIBUTOR TODO: add detailed description**
->
-> Write 2-3 paragraphs that expand on the overview.
->
-> **Include:**
-> - The business/industry problem in more detail
-> - How this quickstart addresses that problem
-> - Key features or capabilities users will gain
-> - Real-world scenarios where this would be used
->
-> This is about the USE CASE, not the technology. Don't explain how it works technically yet.
->
-> **Example:** "In healthcare settings, clinicians often need to quickly access patient information while ensuring HIPAA compliance. This quickstart demonstrates how AI can summarize patient records while maintaining strict data privacy through guardrails..."
-
-
-### See it in action
-
-> **CONTRIBUTOR TODO: add demo links**
->
-> This section is RECOMMENDED but optional.
->
-> **Add links to:**
-> - Arcade interactive demos (preferred)
-> - YouTube/video walkthroughs
-> - Live demo instances (if available)
->
-> This helps users see the value before deploying. Many users don't have immediate access to deployment environments, so demos are crucial.
->
-> **Example:**
-> - [Try the interactive demo](https://arcade.example.com/your-demo)
-> - [Watch the 3-minute walkthrough](https://youtube.com/example)
-
-### Architecture diagrams
-
-> **CONTRIBUTOR TODO: add architecture diagram**
->
-> This section is REQUIRED.
->
-> **Include:**
-> - A clear architecture diagram showing components and data flow
-> - Put image files in `docs/images/` folder
-> - Use descriptive filenames (e.g., `architecture-overview.png`)
-> - Add alt text for accessibility
->
-> **Example:**
-> ```
-> ![Architecture diagram showing data flow from user input through LLM to output](docs/images/architecture-overview.png)
-> ```
->
-> Optionally add a brief explanation of the diagram below the image.
-
-
-## Requirements
-
-> _This section groups all prerequisites users need before deploying_
-
-### Minimum hardware requirements
-
-> **CONTRIBUTOR TODO: add minimum hardware requirements**
->
-> This section is REQUIRED. Be SPECIFIC - don't say "GPU", say exactly which GPU.
->
-> **Include:**
-> - CPU: specify cores, requests, and limits
-> - Memory: specify GiB, requests, and limits  
-> - GPU: exact models (e.g., "NVIDIA A10, A100, L40S, or T4")
-> - Storage: if significant storage is needed
->
-> If your quickstart deploys a model, list the model's resource requirements separately.
->
-> **Example:**
->
-> **Application:**
-> - CPU: 2 vCPU (request) / 4 vCPU (limit)
-> - Memory: 4 GiB (request) / 8 GiB (limit)
->
-> **LLM (if deploying a model):**
-> - CPU: 4 vCPU (request) / 8 vCPU (limit)
-> - Memory: 16 GiB (request) / 32 GiB (limit)
-> - GPU: 1 NVIDIA GPU (A10, A100, L40S, T4, or similar)
->
-> > **Note**: If using MaaS (external model endpoint), GPU is not required.
-
-### Minimum software requirements
-
-> **CONTRIBUTOR TODO: add minimum software requirements**
->
-> This section is REQUIRED. Be SPECIFIC about versions.
->
-> **Include:**
-> - OpenShift version (e.g., "OpenShift 4.14 or later")
-> - OpenShift AI version (e.g., "OpenShift AI 2.22 or later")
-> - Other platform dependencies (operators, services)
-> - Client tools (oc CLI, helm, etc.)
->
-> **BAD:** "Requires OpenShift AI"  
-> **GOOD:** "Tested with OpenShift AI 2.22-2.25 on OpenShift 4.14+"
-
-### Required user permissions
-
-> **CONTRIBUTOR TODO: add user permissions**
->
-> This section is REQUIRED. Be clear about what permissions are needed.
->
-> **Options:**
-> - Regular user with standard permissions (preferred!)
-> - Namespace admin
-> - Cluster admin (only if absolutely necessary - explain why)
->
-> **Example:**
->
-> This quickstart can be deployed by any user with:
-> - Permission to create projects/namespaces
-> - Permission to deploy applications via Helm
-> - No cluster admin access required
-
-
-## Deploy
-
-> _This section contains all deployment instructions_
+## Quick Start
 
 ### Prerequisites
+- Node.js 18+
+- pnpm 9+
+- Python 3.11+
+- uv (Python package manager)
+- Podman and podman-compose (for database)
 
-> **CONTRIBUTOR TODO: verify and update prerequisites**
->
-> List specific items users must have/do BEFORE running installation commands.
->
-> **Include:**
-> - Access to specific platforms/clusters
-> - CLI tools installed (with version requirements)
-> - Authentication/credentials needed
-> - Network access requirements
->
-> **Example:**
->
-> Before deploying, ensure you have:
-> - Access to a Red Hat OpenShift cluster with OpenShift AI 2.22+ installed
-> - `oc` CLI (version 4.14+) installed and authenticated
-> - `helm` CLI (version 3.12+) installed
-> - API key for your model endpoint (if using MaaS)
+### Development
 
-### Installation
-
-> **CONTRIBUTOR TODO: customize installation steps**
->
-> Provide STEP-BY-STEP instructions. Assume users have limited knowledge.
->
-> **Include:**
-> - Clear numbered steps
-> - Exact commands to run (users should be able to copy/paste)
-> - Explanation of what each major step does
-> - Any configuration choices users need to make
->
-> Test these steps yourself on a fresh environment to ensure they work!
->
-> **Key things to update:**
-> - Replace "my-quickstart" and "YOUR_QUICKSTART_NAME" with your actual names
-> - Add any additional --set flags specific to your quickstart
-> - If your quickstart requires a model, keep the model options section below
-> - If your quickstart does NOT require a model, remove the model options section below entirely
-
-1. Clone the repository:
+1. **Install all dependencies** (Node.js + Python):
 ```bash
-git clone https://github.com/rh-ai-quickstart/YOUR_QUICKSTART_NAME.git
-cd YOUR_QUICKSTART_NAME
+make setup
 ```
 
-2. Create a new OpenShift project:
+   Or using pnpm directly:
 ```bash
-PROJECT="my-quickstart"
-oc new-project ${PROJECT}
+pnpm setup
 ```
 
-3. Install using Helm:
+   Or install them separately:
+```bash
+pnpm install          # Install Node.js dependencies
+pnpm install:deps     # Install Python dependencies in API package
+```
+
+2. **Start the database** (using Makefile - recommended):
+```bash
+make db-start
+```
+
+   Or using pnpm:
+```bash
+pnpm db:start
+```
+
+3. **Run database migrations**:
+```bash
+make db-upgrade
+```
+
+   Or using pnpm:
+```bash
+pnpm db:migrate
+```
+
+4. **Start development servers**:
+```bash
+make dev
+```
+
+   Or using pnpm:
+```bash
+pnpm dev
+```
+
+### Available Commands
+
+**Using Makefile (Recommended)** - Works with any package manager (pnpm/npm/yarn):
+```bash
+make setup            # Install all dependencies
+make dev              # Start all development servers
+make build            # Build all packages
+make test             # Run tests across all packages
+make lint             # Check code formatting
+make db-start         # Start database container
+make db-stop          # Stop database container
+make db-logs          # View database logs
+make db-upgrade       # Run database migrations
+make containers-build # Build all containers
+make containers-up    # Start all containers (production-like)
+make containers-down  # Stop all containers
+make clean            # Clean build artifacts
+```
+
+**Using pnpm directly**:
+```bash
+# Development
+pnpm dev              # Start all development servers
+pnpm build            # Build all packages
+pnpm test             # Run tests across all packages
+pnpm lint             # Check code formatting
+pnpm format           # Format code
+
+# Database
+pnpm db:start         # Start database containers
+pnpm db:stop          # Stop database containers  
+pnpm db:migrate       # Run database migrations
+pnpm db:migrate:new      # Create new migration
+pnpm compose:up       # Start all containers
+pnpm compose:down     # Stop all containers
+pnpm containers:build # Build all containers
+# Utilities
+pnpm clean            # Clean build artifacts (turbo prune)
+```
+
+**Note**: The `compose.yml` file at the project root manages all containerized services (database, and future API/UI containers). Service names follow the format `[project-name]-[package]` (e.g., `my-chatbot-db`).
+
+## Development URLs
+
+- **Frontend App**: http://localhost:3000
+- **API Server**: http://localhost:8000
+- **API Documentation**: http://localhost:8000/docs
+- **Database**: postgresql://localhost:5432
+
+## Deployment
+
+This project supports multiple deployment strategies for different environments.
+
+### Container-Based Deployment (Podman Compose)
+
+For local testing or single-server deployments, use Podman Compose:
 
 ```bash
-helm install my-quickstart ./chart --namespace ${PROJECT}
+# Build all container images
+make containers-build
+
+# Start all services
+make containers-up
+
+# View logs
+make containers-logs
+
+# Stop all services
+make containers-down
 ```
 
-#### If your quickstart requires a model
+**Note**: Before deploying, ensure you've:
+1. Built production-ready container images
+2. Configured environment variables in `.env` or `compose.yml`
+3. Run database migrations if deploying with a database
 
-**Option A: Use your own model (MaaS - Model as a Service)**
+### OpenShift/Helm Deployment
 
-If you have an existing model endpoint, provide the model name, endpoint, and API key:
+For production OpenShift (or Kubernetes) deployments, use the included Helm charts.
+
+#### Prerequisites
+
+- OpenShift cluster (4.10+) or Kubernetes cluster (1.24+)
+- `oc` CLI configured to access your OpenShift cluster (or `kubectl` for Kubernetes)
+- `helm` CLI installed (v3.8+)
+- Container registry access (for pushing images)
+
+#### Building Container Images
+
+Before deploying to OpenShift, build and push your container images:
+
 ```bash
-helm install my-quickstart ./chart --namespace ${PROJECT} \
-  --set model.name=YOUR_MODEL_NAME \
-  --set model.endpoint=YOUR_MODEL_ENDPOINT \
-  --set model.api_key=YOUR_API_KEY
+# Build API image (if API is enabled)
+cd packages/api
+podman build -t supply-chain-scenario-rag-api:latest .
+podman tag supply-chain-scenario-rag-api:latest registry.example.com/supply-chain-scenario-rag-api:latest
+podman push registry.example.com/supply-chain-scenario-rag-api:latest
+
+# Build UI image (if UI is enabled)
+cd packages/ui
+podman build -t supply-chain-scenario-rag-ui:latest .
+podman tag supply-chain-scenario-rag-ui:latest registry.example.com/supply-chain-scenario-rag-ui:latest
+podman push registry.example.com/supply-chain-scenario-rag-ui:latest
 ```
 
-> **Note**: The `model.endpoint` should be the full URL including protocol and port if needed (e.g., `https://my-model.example.com` or `http://my-model:8080`).
+#### Deploying with Helm
 
-**Option B: Deploy with a model included in the chart**
+**Option 1: Using Makefile (Recommended)**
 
-If you don't provide any model configuration, the chart will deploy a default model on your cluster:
+The easiest way to deploy is using the provided Makefile targets:
+
+1. **Configure environment variables**:
+
+   Create a `.env` file in the project root:
+
+   ```env
+   POSTGRES_DB=supply-chain-scenario-rag
+   POSTGRES_USER=your-db-user
+   POSTGRES_PASSWORD=your-secure-password
+   DATABASE_URL=postgresql+asyncpg://user:password@supply-chain-scenario-rag-db:5432/supply-chain-scenario-rag
+   DEBUG=false
+   ALLOWED_HOSTS=["*"]
+   VITE_API_BASE_URL=https://api.example.com
+   VITE_ENVIRONMENT=production
+   ```
+
+2. **Deploy to OpenShift**:
+
+   ```bash
+   # Production deployment
+   make deploy
+   
+   # Development deployment (single replica, no persistence)
+   make deploy-dev
+   
+   # Customize deployment
+   make deploy REGISTRY_URL=quay.io REPOSITORY=myorg IMAGE_TAG=v1.0.0
+   ```
+
+   **Note**: The Makefile automatically creates an OpenShift project if it doesn't exist. For Kubernetes, use `--namespace` instead of `--project` in Helm commands.
+
+**Option 2: Using Helm CLI Directly**
+
+For more control, use Helm CLI directly:
+
+1. **Configure environment variables**:
+
+   Export environment variables or create a `.env` file:
+
+   ```bash
+   export POSTGRES_DB="supply-chain-scenario-rag"
+   export POSTGRES_USER="your-db-user"
+   export POSTGRES_PASSWORD="your-secure-password"
+   export DATABASE_URL="postgresql+asyncpg://user:password@supply-chain-scenario-rag-db:5432/supply-chain-scenario-rag"
+   export DEBUG="false"
+   export ALLOWED_HOSTS='["*"]'
+   export VITE_API_BASE_URL="https://api.example.com"
+   export VITE_ENVIRONMENT="production"
+   ```
+
+2. **Install the Helm chart**:
+
+   **For OpenShift** (recommended):
+   ```bash
+   cd deploy/helm/supply-chain-scenario-rag
+   
+   # Create OpenShift project first
+   oc new-project supply-chain-scenario-rag || oc project supply-chain-scenario-rag
+   
+   # Install with default values
+   helm install supply-chain-scenario-rag . \
+     --namespace supply-chain-scenario-rag \
+     --set secrets.POSTGRES_DB="$POSTGRES_DB" \
+     --set secrets.POSTGRES_USER="$POSTGRES_USER" \
+     --set secrets.POSTGRES_PASSWORD="$POSTGRES_PASSWORD" \
+     --set secrets.DATABASE_URL="$DATABASE_URL" \
+     --set secrets.DEBUG="$DEBUG" \
+     --set secrets.ALLOWED_HOSTS="$ALLOWED_HOSTS" \
+     --set secrets.VITE_API_BASE_URL="$VITE_API_BASE_URL"
+   ```
+
+   **For Kubernetes** (alternative):
+   ```bash
+   cd deploy/helm/supply-chain-scenario-rag
+   
+   # Install with default values
+   helm install supply-chain-scenario-rag . \
+     --namespace supply-chain-scenario-rag \
+     --create-namespace \
+     --set secrets.POSTGRES_DB="$POSTGRES_DB" \
+     --set secrets.POSTGRES_USER="$POSTGRES_USER" \
+     --set secrets.POSTGRES_PASSWORD="$POSTGRES_PASSWORD" \
+     --set secrets.DATABASE_URL="$DATABASE_URL" \
+     --set secrets.DEBUG="$DEBUG" \
+     --set secrets.ALLOWED_HOSTS="$ALLOWED_HOSTS" \
+     --set secrets.VITE_API_BASE_URL="$VITE_API_BASE_URL"
+   ```
+
+3. **Update image references** (if using custom registry):
+
+   Using Makefile:
+   ```bash
+   make deploy REGISTRY_URL=registry.example.com REPOSITORY=myorg IMAGE_TAG=v1.0.0
+   ```
+
+   Or edit `deploy/helm/supply-chain-scenario-rag/values.yaml` directly:
+
+   Edit `deploy/helm/supply-chain-scenario-rag/values.yaml` and update image repository/tag:
+
+   ```yaml
+   api:
+     image:
+       repository: registry.example.com/supply-chain-scenario-rag-api
+       tag: latest
+   ui:
+     image:
+       repository: registry.example.com/supply-chain-scenario-rag-ui
+       tag: latest
+   ```
+
+4. **Run database migrations** (if database is enabled):
+
+   ```bash
+   # Migrations run automatically via an OpenShift/Kubernetes Job on first deployment
+   # To manually trigger migrations (OpenShift):
+   oc create job --from=cronjob/supply-chain-scenario-rag-migration supply-chain-scenario-rag-migration-manual -n supply-chain-scenario-rag
+   
+   # Or using kubectl (Kubernetes):
+   kubectl create job --from=cronjob/supply-chain-scenario-rag-migration supply-chain-scenario-rag-migration-manual -n supply-chain-scenario-rag
+   ```
+
+5. **Verify deployment**:
+
+   **Using OpenShift CLI** (`oc`):
+   ```bash
+   # Check pod status
+   oc get pods -n supply-chain-scenario-rag
+   
+   # Check services
+   oc get svc -n supply-chain-scenario-rag
+   
+   # Check routes (OpenShift)
+   oc get routes -n supply-chain-scenario-rag
+   
+   # View logs
+   oc logs -n supply-chain-scenario-rag -l app=supply-chain-scenario-rag-api
+   oc logs -n supply-chain-scenario-rag -l app=supply-chain-scenario-rag-ui
+   oc logs -n supply-chain-scenario-rag -l app=supply-chain-scenario-rag-db
+   ```
+
+   **Using Kubernetes CLI** (`kubectl` - alternative):
+   ```bash
+   # Check pod status
+   kubectl get pods -n supply-chain-scenario-rag
+   
+   # Check services
+   kubectl get svc -n supply-chain-scenario-rag
+   
+   # View logs
+   kubectl logs -n supply-chain-scenario-rag -l app=supply-chain-scenario-rag-api
+   kubectl logs -n supply-chain-scenario-rag -l app=supply-chain-scenario-rag-ui
+   kubectl logs -n supply-chain-scenario-rag -l app=supply-chain-scenario-rag-db
+   ```
+
+#### Upgrading a Deployment
+
+Using Makefile:
 ```bash
-helm install my-quickstart ./chart --namespace ${PROJECT}
+# Upgrade with new image tag
+make deploy IMAGE_TAG=v1.1.0
+
+# Upgrade with custom values
+make deploy HELM_EXTRA_ARGS="--set api.replicas=3"
 ```
 
-> **Note**: Option B requires a GPU available in your cluster for the LLM deployment. See [Minimum hardware requirements](#minimum-hardware-requirements) for details. You must add your own model InferenceService template under `chart/templates/` for this option to work.
+Using Helm CLI:
+```bash
+cd deploy/helm/supply-chain-scenario-rag
 
-#### Testing model access (before deploying)
+# Upgrade with new values
+helm upgrade supply-chain-scenario-rag . \
+  --namespace supply-chain-scenario-rag \
+  --reuse-values \
+  --set api.image.tag=v1.1.0
+```
 
-If you are bringing your own model (Option A), you can verify the endpoint is reachable **before** installing the chart:
+#### Uninstalling
+
+Using Makefile:
+```bash
+make undeploy
+```
+
+Using OpenShift CLI (`oc`):
+```bash
+helm uninstall supply-chain-scenario-rag --namespace supply-chain-scenario-rag
+oc delete project supply-chain-scenario-rag
+```
+
+Using Kubernetes CLI (`kubectl` - alternative):
+```bash
+helm uninstall supply-chain-scenario-rag --namespace supply-chain-scenario-rag
+kubectl delete namespace supply-chain-scenario-rag
+```
+
+### Environment Configuration
+
+#### Development
+
+Create a `.env` file in the project root for local development:
+
+```env
+# Database
+DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/supply-chain-scenario-rag
+DB_ECHO=false
+# API
+DEBUG=true
+ALLOWED_HOSTS=["http://localhost:5173"]
+# UI
+VITE_API_BASE_URL=http://localhost:8000
+VITE_ENVIRONMENT=development
+```
+
+#### Production
+
+For production deployments:
+
+1. **Use OpenShift Secrets** (recommended):
+   - Secrets are managed via Helm values.yaml
+   - Never commit secrets to version control
+   - OpenShift provides additional security features like secret rotation
+
+2. **Use environment-specific values files**:
+   ```bash
+   # Create production values
+   cp deploy/helm/supply-chain-scenario-rag/values.yaml deploy/helm/supply-chain-scenario-rag/values.prod.yaml
+   
+   # Deploy with production values
+   helm install supply-chain-scenario-rag . -f values.prod.yaml
+   ```
+
+3. **Configure resource limits**:
+   Edit `deploy/helm/supply-chain-scenario-rag/values.yaml` to adjust CPU/memory limits based on your workload.
+
+### Production Considerations
+
+- **Database Backups**: Set up regular backups for PostgreSQL if database is enabled
+- **Monitoring**: Configure health checks and monitoring for all services
+- **Scaling**: Adjust replica counts in Helm values.yaml based on load
+- **Security**: 
+  - Use strong passwords and API keys
+  - Enable TLS/HTTPS for production
+  - Configure network policies
+  - Review security contexts in Helm templates
+- **High Availability**: Consider multi-replica deployments for critical services
+- **Resource Management**: Set appropriate CPU/memory limits based on your workload
+
+### Troubleshooting
+
+**Pods not starting**:
+
+Using OpenShift CLI (`oc`):
+```bash
+oc describe pod <pod-name> -n supply-chain-scenario-rag
+oc logs <pod-name> -n supply-chain-scenario-rag
+oc get events -n supply-chain-scenario-rag --sort-by='.lastTimestamp'
+```
+
+Using Kubernetes CLI (`kubectl` - alternative):
+```bash
+kubectl describe pod <pod-name> -n supply-chain-scenario-rag
+kubectl logs <pod-name> -n supply-chain-scenario-rag
+kubectl get events -n supply-chain-scenario-rag --sort-by='.lastTimestamp'
+```
+
+**Database connection issues**:
+- Verify database service is running: `oc get svc -n supply-chain-scenario-rag` (or `kubectl get svc -n supply-chain-scenario-rag`)
+- Check DATABASE_URL format matches your database configuration
+- Verify secrets are correctly set: `oc get secret -n supply-chain-scenario-rag` (or `kubectl get secret -n supply-chain-scenario-rag`)
+
+**Image pull errors**:
+- Verify image registry credentials
+- Check image pull policy in values.yaml
+- Ensure images are pushed to the registry
+
+For more details, see the [Helm chart documentation](deploy/helm/supply-chain-scenario-rag/README.md) (if available) or the [Helm values file](deploy/helm/supply-chain-scenario-rag/values.yaml).
+
+## Extending the Template
+
+This section covers how to customize and extend the template for your project.
+
+### Renaming the Project
+
+After creating a repository from this template, rename the project to match your application:
 
 ```bash
-oc run test-model-access --rm -it --restart=Never \
-  --image=registry.access.redhat.com/ubi9/ubi-minimal:latest \
-  -- /bin/sh -c 'curl -sf --max-time 10 \
-    -H "Authorization: Bearer YOUR_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d "{\"model\": \"YOUR_MODEL_NAME\", \"messages\": [{\"role\": \"user\", \"content\": \"Say hello in one word.\"}], \"max_tokens\": 10}" \
-    "YOUR_MODEL_ENDPOINT/v1/chat/completions" && echo "" && echo "SUCCESS" || echo "FAILED"'
+# Replace all occurrences of the template name with your project name
+# Example: renaming to "my-chatbot"
+
+# On macOS/Linux:
+find . -type f -not -path './.git/*' -exec sed -i '' 's/supply-chain-scenario-rag/my-chatbot/g' {} +
+
+# Rename the Helm chart directory
+mv deploy/helm/supply-chain-scenario-rag deploy/helm/my-chatbot
 ```
 
-Replace `YOUR_API_KEY`, `YOUR_MODEL_NAME`, and `YOUR_MODEL_ENDPOINT` with your actual values.
+**Files affected:**
+- `package.json` (root and all packages)
+- `compose.yml` and `.env.example`
+- Helm chart files in `deploy/helm/`
+- Python config files (`pyproject.toml`, `alembic.ini`)
+- UI components (`header.tsx`, `hero.tsx`, `index.html`)
 
-### Validating the deployment
+### Quick Reference
 
-> **CONTRIBUTOR TODO: add validation steps**
->
-> Tell users how to verify the deployment was successful.
->
-> **Include:**
-> - Commands to check pod status
-> - How to access the application (routes, URLs)
-> - How to verify functionality (e.g., "run helm test")
-> - Expected output/behavior
->
-> **Example:**
->
-> 1. Check all pods are running:
->    ```bash
->    oc get pods -n ${PROJECT}
->    ```
->    
-> 2. Get the application URL:
->    ```bash
->    echo https://$(oc get route/my-app -n ${PROJECT} --template='{{.spec.host}}')
->    ```
->    
-> 3. Test the endpoint is responding:
->    ```bash
->    curl -s https://$(oc get route/my-app -n ${PROJECT} --template='{{.spec.host}}')/health
->    ```
->
-> If your quickstart uses a model, you can run the included Helm test:
-> ```bash
-> helm test my-quickstart --namespace ${PROJECT}
-> ```
->
-> If your quickstart does not use a model, remove the helm test step and add your own validation steps.
+| Task | Location | Documentation |
+|------|----------|---------------|
+| Add API endpoint | `packages/api/src/routes/` | [API README](packages/api/README.md#adding-new-endpoints) |
+| Add UI page | `packages/ui/src/routes/` | [UI README](packages/ui/README.md#adding-new-routes) |
+| Add UI component | `packages/ui/src/components/` | [UI README](packages/ui/README.md#adding-new-components) |
+| Add database model | `packages/db/src/db/` | [DB README](packages/db/README.md#adding-new-models) |
+| Create migration | Run `pnpm db:migrate:new -m "message"` | [DB README](packages/db/README.md#migration-workflow) |
+| Add API integration | `packages/ui/src/services/` + `hooks/` | [UI README](packages/ui/README.md#adding-api-integration) |
 
-### Delete
+### Adding a New API Endpoint
 
-> **CONTRIBUTOR TODO: verify deletion steps**
->
-> Provide clear instructions to cleanly remove the deployment.
->
-> **Include:**
-> - Command to uninstall via Helm
-> - Any manual cleanup needed (secrets, PVCs, etc.)
-> - How to verify complete removal
->
-> Users should be able to return their environment to pre-deployment state.
->
-> **Example:**
->
-> To completely remove the deployment:
->
-> 1. Uninstall the Helm release:
->    ```bash
->    helm uninstall my-quickstart --namespace ${PROJECT}
->    ```
->
-> 2. (Optional) Delete the project:
->    ```bash
->    oc delete project ${PROJECT}
->    ```
+1. **Create schema** in `packages/api/src/schemas/your_resource.py`
+2. **Create route** in `packages/api/src/routes/your_resource.py`
+3. **Register router** in `packages/api/src/main.py`
+4. **Add tests** in `packages/api/tests/test_your_resource.py`
 
-## Repository structure
+See the [API README](packages/api/README.md#adding-new-endpoints) for detailed examples.
 
-> **CONTRIBUTOR TODO: update the file tree**
->
-> Show the organization of your repository so contributors understand where things are.
->
-> Update this to reflect your actual structure - add application code directories, additional config folders, etc.
->
-> Keep it concise - don't list every single file, just the important directories and key files.
+### Adding a New UI Page
 
-```
-.
-├── chart/                    # Helm chart for deploying the quickstart
-│   ├── Chart.yaml            # Chart metadata
-│   ├── values.yaml           # Default configuration values (model info, resources, etc.)
-│   └── templates/            # Kubernetes resource templates
-│       ├── test-model-access.yaml  # Helm test for verifying model connectivity
-│       └── ...               # Add your templates here (deployments, services, etc.)
-├── docs/
-│   └── images/               # Architecture diagrams and screenshots
-└── README.md
+TanStack Router uses file-based routing. Create a file in `packages/ui/src/routes/`:
+
+```typescript
+// packages/ui/src/routes/about.tsx
+import { createFileRoute } from '@tanstack/react-router';
+
+export const Route = createFileRoute('/about')({
+  component: About,
+});
+
+function About() {
+  return <div>About page</div>;
+}
 ```
 
-> **EXAMPLE:** If your quickstart includes application source code (e.g., a web UI, API server), add it as a sibling directory to chart/. For example:
-> ```
-> ├── my-app/                 # Application source code
-> │   ├── app.py
-> │   ├── Containerfile
-> │   └── requirements.txt
-> ```
+The route tree regenerates automatically during development. See the [UI README](packages/ui/README.md#adding-new-routes) for dynamic routes and layouts.
 
-## References
+### Adding a Database Model
 
-> **CONTRIBUTOR TODO: add relevant links**
->
-> This section is RECOMMENDED but optional.
->
-> **Include links to:**
-> - Official documentation for technologies used
-> - Blog posts or articles about the use case
-> - Research papers or whitepapers
-> - Related quickstarts or examples
-> - Partner/vendor documentation
->
-> **Example:**
-> - [OpenShift AI Documentation](https://docs.redhat.com/en/openshift-ai)
-> - [LangChain Documentation](https://langchain.com/docs)
-> - [Blog: Building HIPAA-Compliant AI Applications](https://example.com/blog)
->
-> _Remove this section entirely if you have no references to add._
+1. **Define model** in `packages/db/src/db/models.py`
+2. **Generate migration**: `pnpm db:migrate:new -m "add your_table"`
+3. **Review migration** in `packages/db/alembic/versions/`
+4. **Apply migration**: `pnpm db:migrate`
 
-## Technical details
+See the [DB README](packages/db/README.md#adding-new-models) for model patterns and best practices.
 
-> **CONTRIBUTOR TODO: add technical deep dive**
->
-> This section is OPTIONAL.
->
-> **Use this for:**
-> - How the components work together technically
-> - Implementation details developers would want to know
-> - Model details (size, quantization, context window)
-> - API endpoints and integration points
-> - Performance characteristics
->
-> This is where technical depth goes - the earlier sections focus on the use case.
->
-> _Remove this section if not needed._
+### Connecting UI to API
 
-## Tags
+This project uses a **hooks/services pattern** for API integration:
 
-> **CONTRIBUTOR TODO: add metadata and tags for publication**
->
-> Tags are REQUIRED for publication to redhat.com catalog.
->
-> **Fill in:**
-> - **Title:** (must match H1 heading, max 64 chars)
-> - **Description:** (must match short description, max 160 chars)
-> - **Industry:** ONE from the list in CONTRIBUTING.md (e.g., Healthcare, Retail, Financial Services)
-> - **Product:** Primary Red Hat product (e.g., OpenShift AI, OpenShift, RHEL)
-> - **Use case:** Optional descriptor (e.g., security, automation, productivity)
-> - **Partner:** Optional, list partners if applicable (e.g., NVIDIA, Intel)
-> - **Contributor org:** Defaults to "Red Hat" unless partner or community contribution
->
-> **Example:**
->
-> **Title:** Protect patient data with LLM guardrails  
-> **Description:** Deploy HIPAA-compliant AI assistants for healthcare with built-in data protection and audit logging  
-> **Industry:** Healthcare provider  
-> **Product:** OpenShift AI  
-> **Use case:** Security, compliance  
-> **Partner:** N/A  
-> **Contributor org:** Red Hat
+1. **Create Zod schema** in `packages/ui/src/schemas/` for response validation
+2. **Create service** in `packages/ui/src/services/` for API calls
+3. **Create hook** in `packages/ui/src/hooks/` wrapping TanStack Query
+4. **Use hook in component** (never call services directly)
+
+```
+Component → Hook → TanStack Query → Service → API
+```
+
+See the [UI README](packages/ui/README.md#hooks-and-services-pattern) for detailed examples.
+
+### Package Documentation
+
+Each package has detailed documentation:
+
+- **[API README](packages/api/README.md)** - FastAPI backend: routes, schemas, testing, configuration
+- **[UI README](packages/ui/README.md)** - React frontend: routing, components, state management, Storybook
+- **[DB README](packages/db/README.md)** - PostgreSQL: models, migrations, connection management
+
+## Testing
+
+This project uses **Vitest** for UI testing and **Pytest** for API testing.
+
+### Running Tests
+
+```bash
+# Run all tests across packages
+pnpm test
+
+# Run specific package tests
+pnpm --filter ui test       # UI tests (Vitest)
+pnpm --filter api test      # API tests (Pytest)
+
+# Watch mode (UI only)
+cd packages/ui && pnpm test
+```
+
+### Test Locations
+
+| Package | Framework | Test Location |
+|---------|-----------|---------------|
+| UI | Vitest + React Testing Library | `packages/ui/src/**/*.test.tsx` (co-located) |
+| API | Pytest | `packages/api/tests/` |
+
+### Writing Tests
+
+See the individual package READMEs for detailed testing guides:
+- [UI Testing Guide](packages/ui/README.md#testing)
+- [API Testing Guide](packages/api/README.md#testing-patterns)
+
+## Learn More
+
+- [Turborepo](https://turbo.build/) - Monorepo build system
+- [TanStack Router](https://tanstack.com/router) - Type-safe routing
+- [FastAPI](https://fastapi.tiangolo.com/) - Modern Python web framework
+- [Alembic](https://alembic.sqlalchemy.org/) - Database migrations
+
+---
+
+Generated with [AI QuickStart CLI](https://github.com/TheiaSurette/quickstart-cli)

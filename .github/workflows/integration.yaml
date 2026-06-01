@@ -1,0 +1,30 @@
+name: Integration
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: supply-chain-scenario-rag
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U user -d supply-chain-scenario-rag"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: DB package tests
+        env:
+          DATABASE_URL: postgresql+asyncpg://user:password@localhost:5432/supply-chain-scenario-rag
+        run: cd packages/db && uv sync --extra dev && uv run pytest

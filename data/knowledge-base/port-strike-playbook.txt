@@ -1,0 +1,5 @@
+Port Strike Supply Chain Risk Playbook
+
+A port strike disrupts container loading and unloading, causing vessel queues and delayed inland transport.
+Operators should reroute critical shipments to alternate ports, notify customers of revised ETAs, and increase safety stock
+for time-sensitive components. Monitor demurrage costs and carrier capacity on secondary lanes.

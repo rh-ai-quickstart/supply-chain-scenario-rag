@@ -1,0 +1,5 @@
+Supplier Failure Mitigation Guide
+
+Single-source supplier failure impacts production schedules and inventory buffers.
+Activate qualified secondary suppliers, expedite quality audits on backup vendors, and prioritize SKUs by revenue impact.
+Finance and operations should align on temporary cost increases for expedited freight while recovery plans execute.

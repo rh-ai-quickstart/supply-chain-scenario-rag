@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  lint-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Ruff (api)
+        run: |
+          cd packages/api && uv sync --extra dev && uv run ruff check . && uv run ruff format --check .
+      - name: Ruff (db)
+        run: |
+          cd packages/db && uv sync --extra dev && uv run ruff check . && uv run ruff format --check .
+      - name: Ruff (ingestion)
+        run: |
+          cd packages/ingestion && uv sync --extra dev && uv run ruff check . && uv run ruff format --check .
+
+  lint-typescript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm lint
+
+  unit-tests-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: cd packages/api && uv sync --extra dev && uv run pytest
+
+  unit-tests-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm --filter @supply-chain-scenario-rag/ui test -- --run
+
+  unit-tests-ingestion:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: cd packages/ingestion && uv sync --extra dev && uv run pytest
+
+  helm-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+      - run: helm dependency update deploy/helm/supply-chain-scenario-rag
+      - run: helm lint deploy/helm/supply-chain-scenario-rag
