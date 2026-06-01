@@ -30,6 +30,7 @@ app.include_router(health.router, prefix="/health", tags=["health"])
 # Setup SQLAdmin dashboard at /admin
 setup_admin(app)
 
+
 @app.get("/")
 async def root() -> dict[str, str]:
     """Root endpoint"""

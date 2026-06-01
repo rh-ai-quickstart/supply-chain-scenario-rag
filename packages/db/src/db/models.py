@@ -10,7 +10,7 @@ from .database import Base
 class AuditEvent(Base):
     """Append-only audit log for scenario and chat actions."""
 
-    __tablename__ = "audit_events"
+    __tablename__ = 'audit_events'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     session_id = Column(String(64), nullable=False, index=True)
@@ -22,4 +22,4 @@ class AuditEvent(Base):
     created_at = Column(DateTime, server_default=func.now(), nullable=False, index=True)
 
     def __repr__(self) -> str:
-        return f"<AuditEvent(id={self.id}, action_type={self.action_type!r})>"
+        return f'<AuditEvent(id={self.id}, action_type={self.action_type!r})>'

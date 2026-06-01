@@ -23,7 +23,7 @@ router = APIRouter()
 
 @router.get("/", response_model=list[HealthResponse])
 async def health_check(
-    db_service: DatabaseService | None = Depends(get_db_service) if get_db_service else None
+    db_service: DatabaseService | None = Depends(get_db_service) if get_db_service else None,
 ) -> list[HealthResponse]:
     """Health check endpoint with dependency injection"""
     api_response = HealthResponse(
@@ -31,14 +31,14 @@ async def health_check(
         status="healthy",
         message="API is running",
         version="0.0.0",
-        start_time=API_START_TIME.isoformat()
+        start_time=API_START_TIME.isoformat(),
     )
-    
+
     # Get database health using dependency injection
     responses = [api_response]
     if db_service:
         db_health = await db_service.health_check()
         db_response = HealthResponse(**db_health)
         responses.append(db_response)
-    
+
     return responses
